@@ -18,13 +18,10 @@ URL=https://postmaster.live.com/snds/ipStatus.aspx?key=$MYKEY
 RESULT=`curl -s $URL | awk -F "," {'print $3'} | tail -n 1`
 
 case "$RESULT" in
-"No")   echo "Hotmail is accepting your mails."
-        exit 0 # OK
-        ;;
 "Yes")  echo "You're blocked by Hotmail."
         exit 2 # Critical
         ;;
-*)      echo "Unknown error when running the script."
-        exit 3 # Unknown
+*)      echo "Hotmail is accepting your mails."
+        exit 0 # OK
         ;;
 esac
