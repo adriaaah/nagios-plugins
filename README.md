@@ -1,2 +1,2 @@
 # nagios-plugins
-A set of handmade Nagios plugins.
+A set of homemade Nagios plugins.
