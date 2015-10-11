@@ -1,17 +1,35 @@
 # check_literal
 
 ## What is it?
-`check_literal` is a Bash script for working as a Nagios plugin, although
+`check_literal` is an script for working as a Nagios plugin, although
 it can run without it.
-It checks if some defined string (literal) appears in a given URL (also
-defined) and return an exit code according to the result.
+It checks if some defined string (literal) is presnt in a given URL
+(also defined) and returns an exit code according to the result.
+`check_literal` does the same work than [check_strings](https://exchange.nagios.org/directory/Plugins/System-Metrics/Environmental/check_strings/details)
+using Bash instead of Perl, and using cURL instead of Lynx.
 
 ## How it works?
 
-+ Place this script in your plugins directory, such as 
++ Place this script in your plugins directory, such as
 `/usr/lib/nagios/plugins`.
 + Also, `chmod +x`: Nagios user must be able to run it.
-+ Add it in your `commands.cfg` with something like below:
+
+## Usage
+
+`check_literal -H <hostname> -p <path> -s "<string>"`
+
+Available flags:
+-h: Display help.
+-H: Hostname. Required.
+-p: Path. Required. It refers to relative path, without the starting
+slash bar. So, if your URL is `http://example.com/page.html`, the path
+will be `page.html`.
+-s: String. Required. String to check. If it contains blank spaces,
+put them between double quotes ("").
+
+## Nagios integration
+
++ Declare it in your `commands.cfg` file with something like below:
 
 ```
 define command{
@@ -37,7 +55,6 @@ define service{
 	check_command			check_literal!$HOSTADDRESS$!the/page/to/check.html!"Howdy"
         }
 ```
-+ Run `./check_literal` for a little bit more help.
 
 ## To do
 + You can extend pre-flight checks by validating parameters and values.
