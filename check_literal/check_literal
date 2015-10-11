@@ -1,0 +1,64 @@
+#!/bin/bash
+
+### A brief explanation about what does this script.
+#
+# This script is an approach to check if some text appears in a given
+# URL. It is intented to be called by Nagios, but you can use it
+# standalone.
+#
+###
+
+# Put here your favorite license. Mine is AGPL.
+
+# Variables
+CURL=`which curl`
+GREP=`which grep`
+
+# Init'ed variables
+RESULT=0 # catch exit code
+
+# Exit codes have a defined meaning in Nagios as shown below.
+OK=0
+# WARNING=1 # Not needed.
+CRITICAL=2
+UNKNOWN=3
+
+# Functions
+function getHelp {
+	echo "Usage: $0 -H <hostname> -p <path> -s \"<string>\""
+	echo "Options: -h display this help; -H hostname; -p relative path; -s string"
+	echo "If \"string\" is more than one word, you have to put them\
+	doble quoted."
+	echo ""
+	echo "Example: Let's say you want to check the string \"Hello\
+	world\" in http://www.example.com/page.html."
+	echo "You should use as shown below:"
+	echo "$0 -H www.example.com -p page.html -s \"Hello world\""
+	exit $UNKNOWN
+}
+
+function goCheck() {
+	$CURL -s $2/$4 | $GREP --silent "$6" # the check by itself
+	RESULT=$? # Catch the result of grep
+
+	if [ $RESULT -eq 0 ] # Both grep and curl have returned 0
+		then exit $OK
+	else exit $CRITICAL
+	fi
+}
+
+# Pre-flight checks:
+case "$1" in
+	-h)
+		getHelp
+		;;
+esac
+
+if [ "$#" -ne 6 ] # 6 arguments expected (3 parameters and their values)
+	then getHelp
+	elif [ "$1" = "-H" ] && [ "$3" = "-p" ] && [ "$5" = "-s" ]
+	then goCheck $1 $2 $3 $4 $5 "$6"
+	else getHelp
+fi
+
+exit $?
