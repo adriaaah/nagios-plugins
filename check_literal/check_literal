@@ -24,7 +24,7 @@ CRITICAL=2
 UNKNOWN=3
 
 # Functions
-function getHelp {
+getHelp() {
 	echo "Usage: $0 -H <hostname> -p <path> -s \"<string>\""
 	echo "Options: -h display this help; -H hostname; -p relative path; -s string"
 	echo "If \"string\" is more than one word, you have to put them\
@@ -37,7 +37,7 @@ function getHelp {
 	exit $UNKNOWN
 }
 
-function goCheck() {
+goCheck() {
 	$CURL -s $2/$4 | $GREP --silent "$6" # the check by itself
 	RESULT=$? # Catch the result of grep
 

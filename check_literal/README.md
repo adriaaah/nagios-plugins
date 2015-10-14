@@ -3,7 +3,7 @@
 ## What is it?
 `check_literal` is an script for working as a Nagios plugin, although
 it can run without it.
-It checks if some defined string (literal) is presnt in a given URL
+It checks if some defined string (literal) is present in a given URL
 (also defined) and returns an exit code according to the result.
 `check_literal` does the same work than [check_strings](https://exchange.nagios.org/directory/Plugins/System-Metrics/Environmental/check_strings/details)
 using Bash instead of Perl, and using cURL instead of Lynx.
